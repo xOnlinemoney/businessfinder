@@ -202,7 +202,13 @@ export function Sidebar({ user, counts, isBuyer = true, isSeller = false, isColl
         <div className="flex items-center gap-3">
           <button
             onClick={() => setIsMobileOpen(true)}
-            className="text-dark-600 p-1"
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              setIsMobileOpen(true);
+            }}
+            className="text-dark-600 p-2 -ml-2"
+            style={{ touchAction: 'manipulation' }}
+            aria-label="Open menu"
           >
             <Icon icon="solar:hamburger-menu-linear" width={24} />
           </button>
