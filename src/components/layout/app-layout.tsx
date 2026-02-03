@@ -162,51 +162,17 @@ export function AppLayout({ children }: AppLayoutProps) {
   }
 
   // Logged in - show with sidebar
+  // Note: Sidebar component handles its own mobile menu, overlay, and header
   return (
     <div className="min-h-screen bg-dark-50">
-      {/* Mobile Overlay */}
-      {isMobileMenuOpen && (
-        <div
-          className="fixed inset-0 bg-dark-900/50 z-40 lg:hidden backdrop-blur-sm"
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
-      )}
-
-      {/* Sidebar */}
-      <aside
-        className={cn(
-          'fixed left-0 top-0 bottom-0 bg-dark-900 flex flex-col z-50 w-64',
-          'transform transition-all duration-300',
-          isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
-          'shadow-xl lg:shadow-none'
-        )}
-      >
-        <Sidebar
-          user={userData || undefined}
-          counts={counts}
-        />
-      </aside>
+      {/* Sidebar - handles its own mobile menu internally */}
+      <Sidebar
+        user={userData || undefined}
+        counts={counts}
+      />
 
       {/* Main Content */}
-      <div className={cn(
-        'transition-all duration-300',
-        'lg:ml-64' // Push content to the right on desktop
-      )}>
-        {/* Mobile Header */}
-        <header className="lg:hidden sticky top-0 z-30 bg-white border-b border-dark-200 h-14 px-4 flex items-center justify-between">
-          <button
-            onClick={() => setIsMobileMenuOpen(true)}
-            className="text-dark-600 p-1"
-          >
-            <span className="sr-only">Open menu</span>
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-          <span className="font-bold text-dark-900 tracking-tight">BusinessFinder</span>
-          <div className="w-6" /> {/* Spacer for centering */}
-        </header>
-
+      <div className="lg:ml-64 min-h-screen flex flex-col">
         {/* Page Content */}
         {children}
       </div>
