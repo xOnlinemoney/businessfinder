@@ -1,0 +1,106 @@
+.guide-content {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: #4b5563;
+}
+
+.guide-content p {
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
+}
+
+.guide-content > p:first-child {
+  font-size: 1.25rem;
+  color: #374151;
+  margin-bottom: 2.5rem;
+  line-height: 1.7;
+}
+
+.guide-content h2 {
+  color: #1a1a2e;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+  line-height: 1.3;
+}
+
+.guide-content h3 {
+  color: #1a1a2e;
+  font-size: 1.375rem;
+  font-weight: 600;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.guide-content ul,
+.guide-content ol {
+  margin-top: 1.25rem;
+  margin-bottom: 1.75rem;
+  padding-left: 1.75rem;
+}
+
+.guide-content li {
+  margin-bottom: 0.875rem;
+  line-height: 1.7;
+  padding-left: 0.5rem;
+}
+
+.guide-content ul li {
+  list-style-type: disc;
+}
+
+.guide-content ol li {
+  list-style-type: decimal;
+}
+
+.guide-content li::marker {
+  color: #2563eb;
+}
+
+.guide-content strong {
+  color: #1a1a2e;
+  font-weight: 600;
+}
+
+.guide-content a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.guide-content a:hover {
+  text-decoration: underline;
+}
+
+.guide-content blockquote {
+  border-left: 4px solid #2563eb;
+  background-color: #eff6ff;
+  padding: 1.5rem 1.75rem;
+  margin: 2.5rem 0;
+  border-radius: 0 0.75rem 0.75rem 0;
+}
+
+.guide-content blockquote p {
+  color: #1e40af;
+  font-style: italic;
+  margin-bottom: 0;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+
+.guide-content h2 + p {
+  margin-top: 0;
+}
+
+.guide-content h3 + p {
+  margin-top: 0;
+}
+
+.guide-content p + ul,
+.guide-content p + ol {
+  margin-top: 0.75rem;
+}
