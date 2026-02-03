@@ -36,12 +36,12 @@ export async function updateSession(request: NextRequest) {
     return response;
   }
 
-  const supabase = createServerClient<Database>(supabaseUrl!, supabaseAnonKey!, {
+  const supabase = createServerClient(supabaseUrl!, supabaseAnonKey!, {
     cookies: {
       get(name: string) {
         return request.cookies.get(name)?.value;
       },
-      set(name: string, value: string, options: CookieOptions) {
+      set(name: string, value: string, options: any) {
         request.cookies.set({
           name,
           value,
@@ -58,7 +58,7 @@ export async function updateSession(request: NextRequest) {
           ...options,
         });
       },
-      remove(name: string, options: CookieOptions) {
+      remove(name: string, options: any) {
         request.cookies.set({
           name,
           value: '',
@@ -111,7 +111,7 @@ export async function authMiddleware(request: NextRequest) {
     return response;
   }
 
-  const supabase = createServerClient<Database>(supabaseUrl!, supabaseAnonKey!, {
+  const supabase = createServerClient(supabaseUrl!, supabaseAnonKey!, {
     cookies: {
       get(name: string) {
         return request.cookies.get(name)?.value;
