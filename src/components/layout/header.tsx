@@ -432,7 +432,7 @@ export function Header() {
           {/* Overlay */}
           {isLoggedInSidebarOpen && (
             <div
-              className="lg:hidden fixed inset-0 bg-dark-900/50 z-40 backdrop-blur-sm"
+              className="lg:hidden fixed inset-0 bg-dark-900/50 z-[55] backdrop-blur-sm"
               onClick={() => setIsLoggedInSidebarOpen(false)}
             />
           )}
@@ -440,13 +440,13 @@ export function Header() {
           {/* Sidebar Panel */}
           <aside
             className={cn(
-              'lg:hidden fixed left-0 top-0 bottom-0 w-72 bg-dark-900 z-50',
+              'lg:hidden fixed left-0 top-0 bottom-0 w-72 bg-dark-900 z-[60]',
               'transform transition-transform duration-300 ease-in-out',
               isLoggedInSidebarOpen ? 'translate-x-0' : '-translate-x-full'
             )}
           >
             {/* Sidebar Header */}
-            <div className="h-16 flex items-center justify-between px-4 border-b border-dark-800">
+            <div className="h-16 flex items-center justify-between px-4 border-b border-dark-800 bg-dark-900">
               <Link href="/" className="flex items-center gap-2" onClick={() => setIsLoggedInSidebarOpen(false)}>
                 <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white">
                   <Icon icon="solar:graph-up-linear" width={18} />
