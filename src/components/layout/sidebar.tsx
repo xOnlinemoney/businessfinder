@@ -198,28 +198,31 @@ export function Sidebar({ user, counts, isBuyer = true, isSeller = false, isColl
       )}
 
       {/* Mobile Header */}
-      <header className="lg:hidden sticky top-0 z-30 bg-white border-b border-dark-200 h-16 px-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setIsMobileOpen(true)}
-            onTouchEnd={(e) => {
-              e.preventDefault();
-              setIsMobileOpen(true);
-            }}
-            className="text-dark-600 p-2 -ml-2"
-            style={{ touchAction: 'manipulation' }}
-            aria-label="Open menu"
-          >
-            <Icon icon="solar:hamburger-menu-linear" width={24} />
-          </button>
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white">
-              <Icon icon="solar:graph-up-linear" width={18} />
-            </div>
-            <span className="font-bold text-dark-900 tracking-tight">BusinessFinder</span>
-          </Link>
-        </div>
-        <Link href="/dashboard/notifications" className="relative p-2 text-dark-500">
+      <header className="lg:hidden sticky top-0 z-30 bg-white border-b border-dark-200 h-16 px-4 flex items-center">
+        {/* Left - Hamburger Menu */}
+        <button
+          onClick={() => setIsMobileOpen(true)}
+          onTouchEnd={(e) => {
+            e.preventDefault();
+            setIsMobileOpen(true);
+          }}
+          className="text-dark-600 p-2 -ml-2"
+          style={{ touchAction: 'manipulation' }}
+          aria-label="Open menu"
+        >
+          <Icon icon="solar:hamburger-menu-linear" width={24} />
+        </button>
+
+        {/* Center - Logo */}
+        <Link href="/" className="flex items-center gap-2 absolute left-1/2 -translate-x-1/2">
+          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white">
+            <Icon icon="solar:graph-up-linear" width={18} />
+          </div>
+          <span className="font-bold text-dark-900 tracking-tight">BusinessFinder</span>
+        </Link>
+
+        {/* Right - Notifications */}
+        <Link href="/dashboard/notifications" className="relative p-2 text-dark-500 ml-auto -mr-2">
           <Icon icon="solar:bell-linear" width={24} />
           {(counts?.unreadNotifications || 0) > 0 && (
             <span className="absolute top-1.5 right-2 w-2 h-2 bg-red-500 rounded-full border border-white" />
