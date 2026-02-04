@@ -440,13 +440,14 @@ export function Header() {
           {/* Sidebar Panel */}
           <aside
             className={cn(
-              'lg:hidden fixed left-0 top-0 bottom-0 w-72 bg-dark-900 z-[60]',
+              'lg:hidden fixed left-0 top-0 bottom-0 w-72 z-[60] flex flex-col',
               'transform transition-transform duration-300 ease-in-out',
               isLoggedInSidebarOpen ? 'translate-x-0' : '-translate-x-full'
             )}
+            style={{ backgroundColor: '#0F172A' }}
           >
             {/* Sidebar Header */}
-            <div className="h-16 flex items-center justify-between px-4 border-b border-dark-800 bg-dark-900">
+            <div className="h-16 flex items-center justify-between px-4 border-b border-dark-800 shrink-0" style={{ backgroundColor: '#0F172A' }}>
               <Link href="/" className="flex items-center gap-2" onClick={() => setIsLoggedInSidebarOpen(false)}>
                 <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white">
                   <Icon icon="solar:graph-up-linear" width={18} />
@@ -464,7 +465,7 @@ export function Header() {
             </div>
 
             {/* User Info */}
-            <div className="px-4 py-4 border-b border-dark-800">
+            <div className="px-4 py-4 border-b border-dark-800 shrink-0" style={{ backgroundColor: '#0F172A' }}>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
                   <span className="text-sm font-bold">{getUserInitials()}</span>
@@ -477,7 +478,7 @@ export function Header() {
             </div>
 
             {/* Navigation */}
-            <nav className="flex-1 overflow-y-auto py-4 px-3">
+            <nav className="flex-1 overflow-y-auto py-4 px-3" style={{ backgroundColor: '#0F172A' }}>
               <ul className="space-y-1">
                 {loggedInNavItems.map((item) => {
                   const isActive = pathname === item.href;
@@ -503,7 +504,7 @@ export function Header() {
             </nav>
 
             {/* List Business CTA */}
-            <div className="p-3 border-t border-dark-800">
+            <div className="p-3 border-t border-dark-800" style={{ backgroundColor: '#0F172A' }}>
               <Link href="/dashboard/listings/new" onClick={() => setIsLoggedInSidebarOpen(false)}>
                 <Button variant="primary" className="w-full">
                   <Icon icon="solar:add-circle-linear" width={18} />
@@ -513,7 +514,7 @@ export function Header() {
             </div>
 
             {/* Logout */}
-            <div className="p-3 border-t border-dark-800">
+            <div className="p-3 border-t border-dark-800" style={{ backgroundColor: '#0F172A' }}>
               <button
                 onClick={handleLogout}
                 className="flex items-center gap-3 px-3 py-2.5 w-full text-dark-400 hover:text-white hover:bg-dark-800 rounded-lg transition-colors"
