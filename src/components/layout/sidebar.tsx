@@ -197,8 +197,8 @@ export function Sidebar({ user, counts, isBuyer = true, isSeller = false, isColl
         />
       )}
 
-      {/* Mobile Header */}
-      <header className="lg:hidden sticky top-0 z-30 bg-white border-b border-dark-200 h-16 px-4 flex items-center">
+      {/* Mobile Header - Fixed to top */}
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-b border-dark-200 shadow-sm h-16 px-4 flex items-center">
         {/* Left - Hamburger Menu */}
         <button
           onClick={() => setIsMobileOpen(true)}
@@ -229,6 +229,9 @@ export function Sidebar({ user, counts, isBuyer = true, isSeller = false, isColl
           )}
         </Link>
       </header>
+
+      {/* Mobile Header Spacer - pushes content below fixed header */}
+      <div className="lg:hidden h-16" />
 
       {/* Sidebar */}
       <aside
