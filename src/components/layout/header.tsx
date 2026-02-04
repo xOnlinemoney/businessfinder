@@ -444,7 +444,7 @@ export function Header() {
               'transform transition-transform duration-300 ease-in-out',
               isLoggedInSidebarOpen ? 'translate-x-0' : '-translate-x-full'
             )}
-            style={{ backgroundColor: '#0F172A' }}
+            style={{ backgroundColor: '#0F172A', height: '100vh', minHeight: '100vh' }}
           >
             {/* Sidebar Header */}
             <div className="h-16 flex items-center justify-between px-4 border-b border-dark-800 shrink-0" style={{ backgroundColor: '#0F172A' }}>
