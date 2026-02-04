@@ -5,7 +5,7 @@ import { MarketplaceContent } from './marketplace-content';
 
 export function MarketplaceWrapper() {
   return (
-    <PageShell mainClassName="min-h-screen bg-dark-50 pt-20 lg:pt-0">
+    <PageShell mainClassName="min-h-screen bg-dark-50">
       <MarketplaceContent />
     </PageShell>
   );
