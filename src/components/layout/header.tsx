@@ -43,8 +43,12 @@ export function Header() {
   const [isLoading, setIsLoading] = useState(true);
 
   // Check if on homepage (hero has dark background)
+  // Only use white text on desktop when on homepage and not scrolled
+  // Mobile always uses dark text with white background
   const isHomepage = pathname === '/';
   const useWhiteText = isHomepage && !isScrolled;
+  // Mobile always uses the "scrolled" style (white bg, dark text)
+  const useMobileWhiteText = false;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -151,9 +155,13 @@ export function Header() {
     <header
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+        // Mobile: always white background with border
+        'bg-white/95 backdrop-blur-md border-b border-dark-200 shadow-sm',
+        // Desktop: transparent on homepage when not scrolled
+        'lg:border-0 lg:shadow-none',
         isScrolled
-          ? 'bg-white/80 backdrop-blur-md border-b border-dark-200 shadow-sm'
-          : 'bg-transparent'
+          ? 'lg:bg-white/80 lg:backdrop-blur-md lg:border-b lg:border-dark-200 lg:shadow-sm'
+          : 'lg:bg-transparent'
       )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -164,67 +172,39 @@ export function Header() {
               {/* Mobile Hamburger - Left */}
               <button
                 onClick={() => setIsLoggedInSidebarOpen(true)}
-                className={cn(
-                  'lg:hidden p-2 -ml-2 rounded-lg transition-colors',
-                  useWhiteText
-                    ? 'text-white hover:bg-white/10'
-                    : 'text-dark-600 hover:bg-dark-100'
-                )}
+                className="lg:hidden p-2 -ml-2 rounded-lg transition-colors text-dark-600 hover:bg-dark-100"
               >
                 <Icon icon="solar:hamburger-menu-linear" width={24} />
               </button>
 
               {/* Mobile Logo - Centered */}
               <Link href="/" className="lg:hidden flex items-center gap-2 absolute left-1/2 -translate-x-1/2">
-                <div className={cn(
-                  'w-8 h-8 rounded-xl flex items-center justify-center text-white shadow-lg',
-                  useWhiteText ? 'bg-white/20 backdrop-blur-sm' : 'bg-primary shadow-primary/20'
-                )}>
+                <div className="w-8 h-8 rounded-xl flex items-center justify-center text-white shadow-lg bg-primary shadow-primary/20">
                   <Icon icon="solar:graph-up-linear" width={18} />
                 </div>
-                <span className={cn(
-                  'font-bold text-lg tracking-tight',
-                  useWhiteText ? 'text-white' : 'text-dark-900'
-                )}>
-                  Business<span className={cn(
-                    'font-normal',
-                    useWhiteText ? 'text-white/70' : 'text-dark-500'
-                  )}>Finder</span>
+                <span className="font-bold text-lg tracking-tight text-dark-900">
+                  Business<span className="font-normal text-dark-500">Finder</span>
                 </span>
               </Link>
 
               {/* Mobile Notifications - Right */}
               <Link
                 href="/dashboard/notifications"
-                className={cn(
-                  'lg:hidden p-2 -mr-2 rounded-lg transition-colors',
-                  useWhiteText
-                    ? 'text-white hover:bg-white/10'
-                    : 'text-dark-600 hover:bg-dark-100'
-                )}
+                className="lg:hidden p-2 -mr-2 rounded-lg transition-colors text-dark-600 hover:bg-dark-100"
               >
                 <Icon icon="solar:bell-linear" width={24} />
               </Link>
             </>
           )}
 
-          {/* Mobile: Not Logged In - Logo Left */}
+          {/* Mobile: Not Logged In - Logo Left (always dark text on white bg) */}
           {(!isLoggedIn || isLoading) && (
             <Link href="/" className="lg:hidden flex items-center gap-2.5 shrink-0">
-              <div className={cn(
-                'w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-lg',
-                useWhiteText ? 'bg-white/20 backdrop-blur-sm' : 'bg-primary shadow-primary/20'
-              )}>
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-lg bg-primary shadow-primary/20">
                 <Icon icon="solar:graph-up-linear" width={20} />
               </div>
-              <span className={cn(
-                'font-bold text-lg tracking-tight',
-                useWhiteText ? 'text-white' : 'text-dark-900'
-              )}>
-                Business<span className={cn(
-                  'font-normal',
-                  useWhiteText ? 'text-white/70' : 'text-dark-500'
-                )}>Finder</span>
+              <span className="font-bold text-lg tracking-tight text-dark-900">
+                Business<span className="font-normal text-dark-500">Finder</span>
               </span>
             </Link>
           )}
@@ -390,16 +370,11 @@ export function Header() {
             )}
           </div>
 
-          {/* Mobile Menu Button - Only for non-logged-in users */}
+          {/* Mobile Menu Button - Only for non-logged-in users (always dark on white bg) */}
           {(!isLoggedIn || isLoading) && (
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={cn(
-                'lg:hidden p-2 rounded-lg transition-colors',
-                useWhiteText
-                  ? 'text-white hover:bg-white/10'
-                  : 'text-dark-600 hover:bg-dark-100'
-              )}
+              className="lg:hidden p-2 rounded-lg transition-colors text-dark-600 hover:bg-dark-100"
             >
               <Icon
                 icon={isMobileMenuOpen ? 'solar:close-circle-linear' : 'solar:hamburger-menu-linear'}
