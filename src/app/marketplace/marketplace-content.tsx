@@ -458,18 +458,6 @@ export function MarketplaceContent() {
             </div>
           </div>
 
-          {/* View Toggle */}
-          <div className="flex items-center justify-end mb-6">
-            <div className="flex items-center gap-2">
-              <button className="p-2 bg-primary text-white rounded-lg">
-                <Icon icon="solar:widget-5-linear" width={18} />
-              </button>
-              <button className="p-2 bg-dark-100 text-dark-600 hover:bg-dark-200 rounded-lg transition-colors">
-                <Icon icon="solar:list-linear" width={18} />
-              </button>
-            </div>
-          </div>
-
           {/* Loading State */}
           {isLoading && page === 1 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
