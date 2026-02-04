@@ -14,6 +14,16 @@ const navLinks = [
   { href: '/resources', label: 'Resources' },
 ];
 
+const loggedInNavItems = [
+  { href: '/dashboard', label: 'Dashboard', icon: 'solar:home-smile-linear' },
+  { href: '/marketplace', label: 'Marketplace', icon: 'solar:shop-linear' },
+  { href: '/dashboard/listings', label: 'My Listings', icon: 'solar:layers-linear' },
+  { href: '/dashboard/saved', label: 'Saved Listings', icon: 'solar:heart-linear' },
+  { href: '/dashboard/messages', label: 'Messages', icon: 'solar:letter-linear' },
+  { href: '/dashboard/notifications', label: 'Notifications', icon: 'solar:bell-linear' },
+  { href: '/dashboard/settings', label: 'Settings', icon: 'solar:settings-linear' },
+];
+
 interface UserProfile {
   id: string;
   firstName: string;
@@ -21,16 +31,12 @@ interface UserProfile {
   email: string;
 }
 
-interface HeaderProps {
-  onMobileMenuToggle?: () => void;
-  showMobileMenuButton?: boolean;
-}
-
-export function Header({ onMobileMenuToggle, showMobileMenuButton = false }: HeaderProps) {
+export function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoggedInSidebarOpen, setIsLoggedInSidebarOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -104,6 +110,7 @@ export function Header({ onMobileMenuToggle, showMobileMenuButton = false }: Hea
   // Close mobile menu on route change
   useEffect(() => {
     setIsMobileMenuOpen(false);
+    setIsLoggedInSidebarOpen(false);
     setShowUserMenu(false);
   }, [pathname]);
 
@@ -151,12 +158,12 @@ export function Header({ onMobileMenuToggle, showMobileMenuButton = false }: Hea
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Left: Mobile Menu Button (for logged-in users) + Logo */}
-          <div className="flex items-center gap-3">
-            {/* Mobile Menu Button - Only show when logged in */}
-            {isLoggedIn && showMobileMenuButton && (
+          {/* Mobile: Logged In - Hamburger Left, Logo Center, Bell Right */}
+          {isLoggedIn && !isLoading && (
+            <>
+              {/* Mobile Hamburger - Left */}
               <button
-                onClick={onMobileMenuToggle}
+                onClick={() => setIsLoggedInSidebarOpen(true)}
                 className={cn(
                   'lg:hidden p-2 -ml-2 rounded-lg transition-colors',
                   useWhiteText
@@ -166,10 +173,44 @@ export function Header({ onMobileMenuToggle, showMobileMenuButton = false }: Hea
               >
                 <Icon icon="solar:hamburger-menu-linear" width={24} />
               </button>
-            )}
 
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-2.5 shrink-0">
+              {/* Mobile Logo - Centered */}
+              <Link href="/" className="lg:hidden flex items-center gap-2 absolute left-1/2 -translate-x-1/2">
+                <div className={cn(
+                  'w-8 h-8 rounded-xl flex items-center justify-center text-white shadow-lg',
+                  useWhiteText ? 'bg-white/20 backdrop-blur-sm' : 'bg-primary shadow-primary/20'
+                )}>
+                  <Icon icon="solar:graph-up-linear" width={18} />
+                </div>
+                <span className={cn(
+                  'font-bold text-lg tracking-tight',
+                  useWhiteText ? 'text-white' : 'text-dark-900'
+                )}>
+                  Business<span className={cn(
+                    'font-normal',
+                    useWhiteText ? 'text-white/70' : 'text-dark-500'
+                  )}>Finder</span>
+                </span>
+              </Link>
+
+              {/* Mobile Notifications - Right */}
+              <Link
+                href="/dashboard/notifications"
+                className={cn(
+                  'lg:hidden p-2 -mr-2 rounded-lg transition-colors',
+                  useWhiteText
+                    ? 'text-white hover:bg-white/10'
+                    : 'text-dark-600 hover:bg-dark-100'
+                )}
+              >
+                <Icon icon="solar:bell-linear" width={24} />
+              </Link>
+            </>
+          )}
+
+          {/* Mobile: Not Logged In - Logo Left */}
+          {(!isLoggedIn || isLoading) && (
+            <Link href="/" className="lg:hidden flex items-center gap-2.5 shrink-0">
               <div className={cn(
                 'w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-lg',
                 useWhiteText ? 'bg-white/20 backdrop-blur-sm' : 'bg-primary shadow-primary/20'
@@ -186,7 +227,26 @@ export function Header({ onMobileMenuToggle, showMobileMenuButton = false }: Hea
                 )}>Finder</span>
               </span>
             </Link>
-          </div>
+          )}
+
+          {/* Desktop: Logo - Always Left */}
+          <Link href="/" className="hidden lg:flex items-center gap-2.5 shrink-0">
+            <div className={cn(
+              'w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-lg',
+              useWhiteText ? 'bg-white/20 backdrop-blur-sm' : 'bg-primary shadow-primary/20'
+            )}>
+              <Icon icon="solar:graph-up-linear" width={20} />
+            </div>
+            <span className={cn(
+              'font-bold text-lg tracking-tight',
+              useWhiteText ? 'text-white' : 'text-dark-900'
+            )}>
+              Business<span className={cn(
+                'font-normal',
+                useWhiteText ? 'text-white/70' : 'text-dark-500'
+              )}>Finder</span>
+            </span>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1">
@@ -330,28 +390,23 @@ export function Header({ onMobileMenuToggle, showMobileMenuButton = false }: Hea
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => {
-              if (isLoggedIn && onMobileMenuToggle) {
-                onMobileMenuToggle();
-              } else {
-                setIsMobileMenuOpen(!isMobileMenuOpen);
-              }
-            }}
-            className={cn(
-              'lg:hidden p-2 rounded-lg transition-colors',
-              useWhiteText
-                ? 'text-white hover:bg-white/10'
-                : 'text-dark-600 hover:bg-dark-100',
-              isLoggedIn && showMobileMenuButton && 'hidden'
-            )}
-          >
-            <Icon
-              icon={isMobileMenuOpen ? 'solar:close-circle-linear' : 'solar:hamburger-menu-linear'}
-              width={24}
-            />
-          </button>
+          {/* Mobile Menu Button - Only for non-logged-in users */}
+          {(!isLoggedIn || isLoading) && (
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className={cn(
+                'lg:hidden p-2 rounded-lg transition-colors',
+                useWhiteText
+                  ? 'text-white hover:bg-white/10'
+                  : 'text-dark-600 hover:bg-dark-100'
+              )}
+            >
+              <Icon
+                icon={isMobileMenuOpen ? 'solar:close-circle-linear' : 'solar:hamburger-menu-linear'}
+                width={24}
+              />
+            </button>
+          )}
         </div>
       </div>
 
@@ -394,6 +449,106 @@ export function Header({ onMobileMenuToggle, showMobileMenuButton = false }: Hea
             </div>
           </div>
         </div>
+      )}
+
+      {/* Mobile Sidebar for Logged-in Users */}
+      {isLoggedIn && (
+        <>
+          {/* Overlay */}
+          {isLoggedInSidebarOpen && (
+            <div
+              className="lg:hidden fixed inset-0 bg-dark-900/50 z-40 backdrop-blur-sm"
+              onClick={() => setIsLoggedInSidebarOpen(false)}
+            />
+          )}
+
+          {/* Sidebar Panel */}
+          <aside
+            className={cn(
+              'lg:hidden fixed left-0 top-0 bottom-0 w-72 bg-dark-900 z-50',
+              'transform transition-transform duration-300 ease-in-out',
+              isLoggedInSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+            )}
+          >
+            {/* Sidebar Header */}
+            <div className="h-16 flex items-center justify-between px-4 border-b border-dark-800">
+              <Link href="/" className="flex items-center gap-2" onClick={() => setIsLoggedInSidebarOpen(false)}>
+                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white">
+                  <Icon icon="solar:graph-up-linear" width={18} />
+                </div>
+                <span className="font-bold text-white tracking-tight">
+                  Business<span className="font-normal text-dark-400">Finder</span>
+                </span>
+              </Link>
+              <button
+                onClick={() => setIsLoggedInSidebarOpen(false)}
+                className="p-2 text-dark-400 hover:text-white transition-colors"
+              >
+                <Icon icon="solar:close-circle-linear" width={24} />
+              </button>
+            </div>
+
+            {/* User Info */}
+            <div className="px-4 py-4 border-b border-dark-800">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                  <span className="text-sm font-bold">{getUserInitials()}</span>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-white">{getUserDisplayName()}</p>
+                  <p className="text-xs text-dark-400">{userProfile?.email}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Navigation */}
+            <nav className="flex-1 overflow-y-auto py-4 px-3">
+              <ul className="space-y-1">
+                {loggedInNavItems.map((item) => {
+                  const isActive = pathname === item.href;
+                  return (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        onClick={() => setIsLoggedInSidebarOpen(false)}
+                        className={cn(
+                          'flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors',
+                          isActive
+                            ? 'text-white bg-primary'
+                            : 'text-dark-400 hover:text-white hover:bg-dark-800'
+                        )}
+                      >
+                        <Icon icon={item.icon} width={20} />
+                        <span className="text-sm font-medium">{item.label}</span>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+
+            {/* List Business CTA */}
+            <div className="p-3 border-t border-dark-800">
+              <Link href="/dashboard/listings/new" onClick={() => setIsLoggedInSidebarOpen(false)}>
+                <Button variant="primary" className="w-full">
+                  <Icon icon="solar:add-circle-linear" width={18} />
+                  <span>List a Business</span>
+                </Button>
+              </Link>
+            </div>
+
+            {/* Logout */}
+            <div className="p-3 border-t border-dark-800">
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-3 px-3 py-2.5 w-full text-dark-400 hover:text-white hover:bg-dark-800 rounded-lg transition-colors"
+              >
+                <Icon icon="solar:logout-2-linear" width={20} />
+                <span className="text-sm font-medium">Sign Out</span>
+              </button>
+            </div>
+          </aside>
+        </>
       )}
     </header>
   );
