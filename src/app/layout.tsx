@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Analytics } from '@vercel/analytics/react';
 import '@/styles/globals.css';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://businessfinder.com';
@@ -141,6 +142,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen bg-dark-50 antialiased">
         {children}
+        <Analytics />
       </body>
     </html>
   );
