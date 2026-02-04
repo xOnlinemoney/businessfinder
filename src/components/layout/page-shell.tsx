@@ -1,9 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Icon } from '@iconify/react';
 import { cn } from '@/lib/utils';
 import { Sidebar } from './sidebar';
 import { Header } from './header';
@@ -42,7 +39,6 @@ export function PageShell({
   headerClassName,
   mainClassName,
 }: PageShellProps) {
-  const pathname = usePathname();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -56,7 +52,6 @@ export function PageShell({
     unreadMessages: 0,
     unreadNotifications: 0,
   });
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   useEffect(() => {
@@ -128,10 +123,6 @@ export function PageShell({
     }
   }, []);
 
-  // Close mobile sidebar on route change
-  useEffect(() => {
-    setIsMobileSidebarOpen(false);
-  }, [pathname]);
 
   // While loading, show regular layout
   if (isLoading) {
@@ -156,76 +147,22 @@ export function PageShell({
   }
 
   // Logged in - show with sidebar
+  // Note: Sidebar component handles its own mobile menu, overlay, and header internally
   return (
     <div className="min-h-screen bg-dark-50">
-      {/* Mobile Overlay */}
-      {isMobileSidebarOpen && (
-        <div
-          className="fixed inset-0 bg-dark-900/50 z-40 lg:hidden backdrop-blur-sm"
-          onClick={() => setIsMobileSidebarOpen(false)}
-        />
-      )}
-
-      {/* Sidebar */}
-      <aside
-        className={cn(
-          'fixed left-0 top-0 bottom-0 bg-dark-900 flex flex-col z-50',
-          'transform transition-all duration-300',
-          isSidebarCollapsed ? 'w-20' : 'w-64',
-          isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
-          'shadow-xl lg:shadow-none'
-        )}
-      >
-        <Sidebar
-          user={userData || undefined}
-          counts={counts}
-          isCollapsed={isSidebarCollapsed}
-          onCollapseChange={setIsSidebarCollapsed}
-        />
-      </aside>
+      {/* Sidebar - handles its own mobile menu internally */}
+      <Sidebar
+        user={userData || undefined}
+        counts={counts}
+        isCollapsed={isSidebarCollapsed}
+        onCollapseChange={setIsSidebarCollapsed}
+      />
 
       {/* Main Content */}
       <div className={cn(
-        'transition-all duration-300',
+        'transition-all duration-300 min-h-screen flex flex-col',
         isSidebarCollapsed ? 'lg:ml-20' : 'lg:ml-64'
       )}>
-        {/* Header for logged-in users */}
-        <header className="sticky top-0 z-30 bg-white border-b border-dark-200 h-14 px-4 flex items-center justify-between">
-          {/* Mobile: hamburger menu */}
-          <button
-            onClick={() => setIsMobileSidebarOpen(true)}
-            className="lg:hidden text-dark-600 p-1"
-          >
-            <Icon icon="solar:hamburger-menu-linear" width={24} />
-          </button>
-
-          {/* Desktop: Navigation links */}
-          <div className="hidden lg:flex items-center gap-6">
-            <Link href="/marketplace" className="text-sm font-medium text-dark-600 hover:text-dark-900 transition-colors">
-              Marketplace
-            </Link>
-            <Link href="/financing" className="text-sm font-medium text-dark-600 hover:text-dark-900 transition-colors">
-              Financing
-            </Link>
-            <Link href="/resources" className="text-sm font-medium text-dark-600 hover:text-dark-900 transition-colors">
-              Resources
-            </Link>
-          </div>
-
-          {/* Mobile: Logo */}
-          <Link href="/" className="lg:hidden flex items-center gap-2">
-            <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center text-white">
-              <Icon icon="solar:graph-up-linear" width={16} />
-            </div>
-            <span className="font-bold text-dark-900 tracking-tight">BusinessFinder</span>
-          </Link>
-
-          {/* Right side: notifications */}
-          <Link href="/dashboard/notifications" className="text-dark-500 hover:text-dark-900 p-1 transition-colors">
-            <Icon icon="solar:bell-linear" width={24} />
-          </Link>
-        </header>
-
         {/* Page Content */}
         <main className={mainClassName}>{children}</main>
         {showFooter && <Footer />}
